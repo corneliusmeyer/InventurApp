@@ -1,3 +1,1 @@
-class Profil {
-  static var inventurList = [];
-}
+var inventur_holder = [];

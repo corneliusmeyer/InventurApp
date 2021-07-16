@@ -2,5 +2,9 @@ import 'dart:html';
 
 class Inventur {
   File inventur;
-  Inventur(this.inventur);
+  int remainingScans;
+  int maxScans;
+  String name;
+
+  Inventur(this.name, this.inventur, this.remainingScans, this.maxScans);
 }
