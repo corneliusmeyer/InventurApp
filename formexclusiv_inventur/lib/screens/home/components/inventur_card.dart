@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:formexclusiv_inventur/models/inventur.dart';
+import 'package:formexclusiv_inventur/screens/inventur/inventur_screen.dart';
 import 'package:formexclusiv_inventur/size_config.dart';
 
 class InventurCard extends StatelessWidget {
@@ -11,7 +12,8 @@ class InventurCard extends StatelessWidget {
     double defaultSize = SizeConfig.defaultSize;
     return GestureDetector(
       onTap: () {
-        print("tabbed");
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => InventurScreen()));
       },
       child: AspectRatio(
         aspectRatio: 1.65,

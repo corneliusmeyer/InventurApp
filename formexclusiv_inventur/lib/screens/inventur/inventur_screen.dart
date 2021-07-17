@@ -10,8 +10,11 @@ class InventurScreen extends StatefulWidget {
 class _InventurScreenState extends State<InventurScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: null,
+    return Scaffold(
+      appBar: AppBar(),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.document_scanner),
+      ),
     );
   }
 }
