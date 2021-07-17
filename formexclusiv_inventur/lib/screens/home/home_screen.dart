@@ -62,10 +62,11 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: FloatingActionButton(
         tooltip: 'Neue Inventur anlegen',
         onPressed: () => showModalBottomSheet(
-            context: context,
-            builder: (context) {
-              return CreateInventurDialog();
-            }),
+          context: context,
+          builder: (context) {
+            return CreateInventurDialog();
+          },
+        ),
         child: Icon(Icons.add),
       ),
     );
