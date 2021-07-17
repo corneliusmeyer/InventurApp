@@ -1,9 +1,8 @@
-import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:formexclusiv_inventur/models/profil.dart' as profil;
 import 'package:formexclusiv_inventur/models/inventur.dart';
+import 'package:formexclusiv_inventur/models/profil.dart' as profil;
+//import 'package:formexclusiv_inventur/models/inventur.dart';
 
 class CreateInventurDialog extends StatefulWidget {
   CreateInventurDialog({Key key}) : super(key: key);
@@ -13,7 +12,7 @@ class CreateInventurDialog extends StatefulWidget {
 }
 
 class _CreateInventurDialogState extends State<CreateInventurDialog> {
-  TextEditingController _controller;
+  TextEditingController _controller = TextEditingController();
   String _filename = "keine";
   PlatformFile _file;
 
@@ -26,6 +25,7 @@ class _CreateInventurDialogState extends State<CreateInventurDialog> {
             child: Container(
               margin: EdgeInsets.all(20),
               child: TextField(
+                controller: _controller,
                 decoration: InputDecoration(
                   labelText: 'Bezeichnung',
                   border: OutlineInputBorder(),
@@ -60,7 +60,9 @@ class _CreateInventurDialogState extends State<CreateInventurDialog> {
             ),
           ),
           ElevatedButton.icon(
-            // onPressed: () {profil.inventur_holder.add(new Inventur(name, _file, remainingScans, maxScans))},
+            onPressed: () {
+              profil.inventur_holder.add(new Inventur(_controller.text, _file));
+            },
             icon: Icon(Icons.check),
             label: Text('erstellen'),
           ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:formexclusiv_inventur/screens/components/inventur_card.dart';
 import 'package:formexclusiv_inventur/size_config.dart';
 import 'package:formexclusiv_inventur/screens/home/components/create_inventur_dialog.dart';
+import 'package:formexclusiv_inventur/models/profil.dart' as profil;
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
@@ -13,7 +15,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    bool hasData = true;
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -39,40 +40,24 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Expanded(
               flex: 4,
-              child: Container(),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: SizeConfig.defaultSize * 2),
+                child: Container(
+                  child: ListView.builder(
+                    itemCount: profil.inventur_holder.length,
+                    itemBuilder: (context, index) =>
+                        InventurCard(profil.inventur_holder[index]),
+                  ),
+                ),
+              ),
             ),
-            Text('(c) Cornelius Meyer, 2021')
+            Text('(c) Cornelius Meyer, 2021'),
+            SizedBox(
+              height: 8,
+            )
           ],
         ),
-        /*child: Center(
-          child: Column(
-            children: [
-              SizedBox(
-                height: MediaQuery.of(context).padding.top,
-              ),
-              Image.asset(
-                "assets/fe_logo.png",
-                height: 100,
-              ),
-              InventurCard('Inventur 2021', 500, 2300),
-              InventurCard('Inventur 2020', 1000, 1200),
-              InventurCard('Inventur 2019', 80, 90),
-              /*Image.asset(
-              "assets/fe_logo.png",
-              height: 130,
-            ),
-            Text("Inventur"),
-            (hasData == true)
-                ? ListView.builder(
-                    itemCount: 0,
-                    itemBuilder: (context, index) {
-                      return new InventurItem();
-                    },
-                  )
-                : Text("Neue Inventur anlegen"),*/
-            ],
-          ),
-        ),*/
       ),
       floatingActionButton: FloatingActionButton(
         tooltip: 'Neue Inventur anlegen',

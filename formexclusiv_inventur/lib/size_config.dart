@@ -15,6 +15,6 @@ class SizeConfig {
 
     defaultSize = orientation == Orientation.landscape
         ? screenHeight * 0.024
-        : screenWidth * 0.0024;
+        : screenWidth * 0.024;
   }
 }

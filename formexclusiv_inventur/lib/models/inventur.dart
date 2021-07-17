@@ -1,10 +1,8 @@
-import 'dart:html';
+import 'package:file_picker/file_picker.dart';
 
 class Inventur {
-  File inventur;
-  int remainingScans;
-  int maxScans;
+  PlatformFile inventur_file;
   String name;
 
-  Inventur(this.name, this.inventur, this.remainingScans, this.maxScans);
+  Inventur(this.name, this.inventur_file);
 }
