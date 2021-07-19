@@ -1,7 +1,11 @@
+import 'dart:io';
+
+import 'package:excel/excel.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:formexclusiv_inventur/models/inventur.dart';
 import 'package:formexclusiv_inventur/models/profil.dart' as profil;
+import 'package:path_provider/path_provider.dart';
 //import 'package:formexclusiv_inventur/models/inventur.dart';
 
 class CreateInventurDialog extends StatefulWidget {
@@ -60,8 +64,14 @@ class _CreateInventurDialogState extends State<CreateInventurDialog> {
             ),
           ),
           ElevatedButton.icon(
-            onPressed: () {
-              profil.inventur_holder.add(new Inventur(_controller.text, _file));
+            onPressed: () async {
+              // profil.inventur_holder.add(new Inventur(_controller.text, _file));
+              var import = Excel.createExcel();
+
+              Directory appDocumentsDirectory =
+                  await getApplicationDocumentsDirectory();
+              String appDocumentsPath = appDocumentsDirectory.path;
+              String filePath = '$appDocumentsPath/$_filename';
             },
             icon: Icon(Icons.check),
             label: Text('erstellen'),

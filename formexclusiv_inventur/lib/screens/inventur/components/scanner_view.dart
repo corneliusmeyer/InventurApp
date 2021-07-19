@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class _ScannerViewState extends State<ScannerView> {
 
   @override
   void dispose() {
-    controller.dispose();
+    if (controller != null) controller.dispose();
     super.dispose();
   }
 
@@ -45,13 +46,7 @@ class _ScannerViewState extends State<ScannerView> {
   }
 
   void onQrViewCreated(QRViewController controller) {
-    setState(() => this.controller = controller);
-    controller.scannedDataStream.listen((barcode) {
-      setState(() {
-        print(barcode.code);
-        Navigator.pop(context, barcode.code);
-        return;
-      });
-    });
+    controller.scannedDataStream.first
+        .then((value) => Navigator.pop(context, value.code));
   }
 }

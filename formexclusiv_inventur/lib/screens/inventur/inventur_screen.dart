@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:formexclusiv_inventur/screens/inventur/components/addItem_view.dart';
 import 'package:formexclusiv_inventur/screens/inventur/components/scanner_view.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
@@ -27,9 +28,9 @@ class _InventurScreenState extends State<InventurScreen> {
           builder: (context) {
             return ScannerView();
           },
-        ).then((value) {
+        ).then((barcode) {
           setState(() {
-            if (barcode.length > 0) barcode = value;
+            this.barcode = barcode;
           });
         }),
       ),
