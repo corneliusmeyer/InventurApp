@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:formexclusiv_inventur/size_config.dart';
+import 'package:formexclusiv_inventur/provider/size_config.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class ScannerView extends StatefulWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:formexclusiv_inventur/screens/home/components/inventur_card.dart';
-import 'package:formexclusiv_inventur/size_config.dart';
+import 'package:formexclusiv_inventur/provider/size_config.dart';
 import 'package:formexclusiv_inventur/screens/home/components/create_inventur_dialog.dart';
 import 'package:formexclusiv_inventur/models/profil.dart' as profil;
 

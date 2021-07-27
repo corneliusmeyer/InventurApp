@@ -51,9 +51,11 @@ class _CreateInventurDialogState extends State<CreateInventurDialog> {
                               allowedExtensions: ['xlsx']);
                       if (result != null) {
                         _file = result.files.first;
-                        setState(() {
-                          _filename = _file.name;
-                        });
+                        setState(
+                          () {
+                            _filename = _file.name;
+                          },
+                        );
                       }
                     },
                     icon: Icon(Icons.upload),
@@ -66,12 +68,34 @@ class _CreateInventurDialogState extends State<CreateInventurDialog> {
           ElevatedButton.icon(
             onPressed: () async {
               // profil.inventur_holder.add(new Inventur(_controller.text, _file));
-              var import = Excel.createExcel();
-
+              //Path to save
               Directory appDocumentsDirectory =
                   await getApplicationDocumentsDirectory();
               String appDocumentsPath = appDocumentsDirectory.path;
-              String filePath = '$appDocumentsPath/$_filename';
+              String savePath = '$appDocumentsPath/$_filename';
+              //
+              String filePath = _file.path;
+              var bytes = File(filePath).readAsBytesSync();
+              var excel = Excel.decodeBytes(bytes);
+              //copy file to app
+              excel.encode().then((value) {
+                File(savePath)
+                  ..createSync(recursive: true)
+                  ..writeAsBytesSync(value);
+              }).whenComplete(
+                () {
+                  bytes = File(savePath).readAsBytesSync();
+                  excel = Excel.decodeBytes(bytes);
+                  for (var table in excel.tables.keys) {
+                    print(table); //sheet Name
+                    print(excel.tables[table].maxCols);
+                    print(excel.tables[table].maxRows);
+                    for (var row in excel.tables[table].rows) {
+                      print("$row");
+                    }
+                  }
+                },
+              );
             },
             icon: Icon(Icons.check),
             label: Text('erstellen'),
