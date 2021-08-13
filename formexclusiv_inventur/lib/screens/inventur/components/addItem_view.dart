@@ -3,8 +3,10 @@ import 'package:formexclusiv_inventur/models/scanned_item.dart';
 
 class AddItemView extends StatelessWidget {
   final ScannedItem item;
-  final myController = TextEditingController();
-  AddItemView(this.item);
+  final List<String> kategorien;
+  final mengeController = TextEditingController();
+  final preisController = TextEditingController();
+  AddItemView(this.item, this.kategorien);
 
   @override
   Widget build(BuildContext context) {
@@ -12,9 +14,9 @@ class AddItemView extends StatelessWidget {
       child: Column(
         children: [
           Text('ID: ' + item.artNr),
-          Text('Bezeichnung: ' + item.bezeichnung),
+          Text(item.bezeichnung),
           DropdownButton<String>(
-            items: <String>['A', 'B', 'C', 'D'].map((String value) {
+            items: kategorien.map((String value) {
               return DropdownMenuItem<String>(
                 value: value,
                 child: new Text(value),
@@ -23,18 +25,27 @@ class AddItemView extends StatelessWidget {
             onChanged: (_) {},
           ),
           TextField(
-            controller: myController,
+            controller: mengeController,
             keyboardType: TextInputType.number,
             decoration: InputDecoration(labelText: 'Anzahl'),
           ),
+          TextFormField(
+            initialValue: item.preis.toString(),
+            //controller: preisController,
+            keyboardType: TextInputType.number,
+            decoration: InputDecoration(
+              labelText: 'Preis',
+            ),
+          ),
           ElevatedButton.icon(
             onPressed: () {
-              int anzahl = int.tryParse(myController.text);
+              int anzahl = int.tryParse(mengeController.text);
               if (anzahl >= 0)
                 Navigator.pop(
-                    context,
-                    new ScannedItem(item.artNr, item.bezeichnung, anzahl,
-                        item.kategorie, item.preis));
+                  context,
+                  new ScannedItem(item.artNr, item.bezeichnung, anzahl,
+                      item.kategorie, item.preis),
+                );
             },
             icon: Icon(Icons.check),
             label: Text('hinzufügen'),
