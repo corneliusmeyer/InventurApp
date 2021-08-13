@@ -1,46 +1,41 @@
 import 'package:flutter/material.dart';
-
-/*class AddItemView extends StatefulWidget {
-  AddItemView({Key key}) : super(key: key);
-
-  @override
-  _AddItemViewState createState() => _AddItemViewState();
-}
-
-class _AddItemViewState extends State<AddItemView> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Text('ID: '),
-          Text('Bezeichnung: '),
-          TextField(
-            keyboardType: TextInputType.number,
-            decoration: InputDecoration(labelText: 'Anzahl'),
-          ),
-        ],
-      ),
-    );
-  }
-}*/
+import 'package:formexclusiv_inventur/models/scanned_item.dart';
 
 class AddItemView extends StatelessWidget {
-  const AddItemView({Key key}) : super(key: key);
+  final ScannedItem item;
+  final myController = TextEditingController();
+  AddItemView(this.item);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Column(
         children: [
-          Text('ID: '),
-          Text('Bezeichnung: '),
+          Text('ID: ' + item.artNr),
+          Text('Bezeichnung: ' + item.bezeichnung),
+          DropdownButton<String>(
+            items: <String>['A', 'B', 'C', 'D'].map((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: new Text(value),
+              );
+            }).toList(),
+            onChanged: (_) {},
+          ),
           TextField(
+            controller: myController,
             keyboardType: TextInputType.number,
             decoration: InputDecoration(labelText: 'Anzahl'),
           ),
           ElevatedButton.icon(
-            onPressed: () {},
+            onPressed: () {
+              int anzahl = int.tryParse(myController.text);
+              if (anzahl >= 0)
+                Navigator.pop(
+                    context,
+                    new ScannedItem(item.artNr, item.bezeichnung, anzahl,
+                        item.kategorie, item.preis));
+            },
             icon: Icon(Icons.check),
             label: Text('hinzufügen'),
           ),

@@ -66,6 +66,10 @@ class _HomeScreenState extends State<HomeScreen> {
           builder: (context) {
             return CreateInventurDialog();
           },
+        ).whenComplete(
+          () => {
+            setState(() {}),
+          },
         ),
         child: Icon(Icons.add),
       ),

@@ -48,7 +48,7 @@ class _CreateInventurDialogState extends State<CreateInventurDialog> {
                       FilePickerResult result = await FilePicker.platform
                           .pickFiles(
                               type: FileType.custom,
-                              allowedExtensions: ['xlsx']);
+                              allowedExtensions: ['xlsx', 'xls']);
                       if (result != null) {
                         _file = result.files.first;
                         setState(
@@ -67,7 +67,7 @@ class _CreateInventurDialogState extends State<CreateInventurDialog> {
           ),
           ElevatedButton.icon(
             onPressed: () async {
-              // profil.inventur_holder.add(new Inventur(_controller.text, _file));
+              profil.inventur_holder.add(new Inventur(_controller.text, _file));
               //Path to save
               Directory appDocumentsDirectory =
                   await getApplicationDocumentsDirectory();
@@ -86,14 +86,15 @@ class _CreateInventurDialogState extends State<CreateInventurDialog> {
                 () {
                   bytes = File(savePath).readAsBytesSync();
                   excel = Excel.decodeBytes(bytes);
-                  for (var table in excel.tables.keys) {
+                  /*for (var table in excel.tables.keys) {
                     print(table); //sheet Name
                     print(excel.tables[table].maxCols);
                     print(excel.tables[table].maxRows);
-                    for (var row in excel.tables[table].rows) {
+                    /*for (var row in excel.tables[table].rows) {
                       print("$row");
-                    }
+                    }*/
                   }
+                  setState(() {});*/
                 },
               );
             },

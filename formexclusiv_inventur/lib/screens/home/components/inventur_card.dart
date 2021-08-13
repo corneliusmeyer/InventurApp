@@ -13,7 +13,13 @@ class InventurCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => InventurScreen()));
+          context,
+          MaterialPageRoute(
+            builder: (context) => InventurScreen(
+              inventur: _inventur,
+            ),
+          ),
+        );
       },
       child: AspectRatio(
         aspectRatio: 1.65,
