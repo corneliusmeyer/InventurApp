@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:formexclusiv_inventur/models/inventur.dart';
 import 'package:formexclusiv_inventur/screens/inventur/inventur_screen.dart';
 import 'package:formexclusiv_inventur/provider/size_config.dart';
+import 'package:path/path.dart' as p;
 
 class InventurCard extends StatelessWidget {
-  final Inventur _inventur;
+  final String _inventur;
   const InventurCard(this._inventur);
 
   @override
@@ -16,7 +18,7 @@ class InventurCard extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => InventurScreen(
-              inventur: _inventur,
+              inventur: new Inventur(_inventur),
             ),
           ),
         );
@@ -39,14 +41,35 @@ class InventurCard extends StatelessWidget {
               ],
             ),
             child: Card(
-              //color: new Color(0xFF333366),
-              child: Column(
-                children: [
-                  Text(
-                    _inventur.name,
-                    style: TextStyle(fontSize: defaultSize * 2.2),
+              child: Slidable(
+                actionPane: SlidableScrollActionPane(),
+                secondaryActions: <Widget>[
+                  IconSlideAction(
+                    caption: 'Umbenennen',
+                    color: Colors.yellow,
+                    icon: Icons.drive_file_rename_outline,
+                    onTap: () => print('Exportieren'),
                   ),
-                  Text(
+                  IconSlideAction(
+                    caption: 'Exportieren',
+                    color: Colors.blue,
+                    icon: Icons.import_export,
+                    onTap: () => print('Exportieren'),
+                  ),
+                  IconSlideAction(
+                    caption: 'Löschen',
+                    color: Colors.red,
+                    icon: Icons.delete,
+                    onTap: () => print('Löschen'),
+                  ),
+                ],
+                child: Column(
+                  children: [
+                    Text(
+                      p.basename(_inventur),
+                      style: TextStyle(fontSize: defaultSize * 2.2),
+                    ),
+                    /*Text(
                     _inventur.inventur_file.name,
                     style: TextStyle(fontSize: defaultSize * 2.2),
                   ),
@@ -62,8 +85,9 @@ class InventurCard extends StatelessWidget {
                   LinearProgressIndicator(
                     minHeight: 6,
                     value: 1 / 4,
-                  ),
-                ],
+                  ),*/
+                  ],
+                ),
               ),
             ),
           ),
@@ -73,8 +97,8 @@ class InventurCard extends StatelessWidget {
   }
 }
 
-Row buildInfoRow(double defaultSize, {icon, text}) {
+/*Row buildInfoRow(double defaultSize, {icon, text}) {
   return Row(
     children: [Icon(icon), SizedBox(width: defaultSize), Text(text)],
   );
-}
+}*/

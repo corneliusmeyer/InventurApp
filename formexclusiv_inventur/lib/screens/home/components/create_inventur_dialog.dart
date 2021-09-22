@@ -3,14 +3,11 @@ import 'dart:io';
 import 'package:excel/excel.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:formexclusiv_inventur/models/inventur.dart';
-import 'package:formexclusiv_inventur/models/profil.dart' as profil;
 import 'package:path_provider/path_provider.dart';
 //import 'package:formexclusiv_inventur/models/inventur.dart';
 
 class CreateInventurDialog extends StatefulWidget {
   CreateInventurDialog({Key key}) : super(key: key);
-
   @override
   _CreateInventurDialogState createState() => _CreateInventurDialogState();
 }
@@ -45,10 +42,11 @@ class _CreateInventurDialogState extends State<CreateInventurDialog> {
                   Text('Ausgewählte Inventur: ' + _filename),
                   ElevatedButton.icon(
                     onPressed: () async {
-                      FilePickerResult result = await FilePicker.platform
-                          .pickFiles(
-                              type: FileType.custom,
-                              allowedExtensions: ['xlsx', 'xls']);
+                      FilePickerResult result =
+                          await FilePicker.platform.pickFiles(
+                        type: FileType.custom,
+                        allowedExtensions: ['xlsx'],
+                      );
                       if (result != null) {
                         _file = result.files.first;
                         setState(
@@ -67,22 +65,24 @@ class _CreateInventurDialogState extends State<CreateInventurDialog> {
           ),
           ElevatedButton.icon(
             onPressed: () async {
-              profil.inventur_holder.add(new Inventur(_controller.text, _file));
-              //Path to save
-              Directory appDocumentsDirectory =
-                  await getApplicationDocumentsDirectory();
-              String appDocumentsPath = appDocumentsDirectory.path;
-              String savePath = '$appDocumentsPath/$_filename';
-              //
-              String filePath = _file.path;
-              var bytes = File(filePath).readAsBytesSync();
-              var excel = Excel.decodeBytes(bytes);
-              //copy file to app
-              excel.encode().then((value) {
-                File(savePath)
-                  ..createSync(recursive: true)
-                  ..writeAsBytesSync(value);
-              });
+              if (_controller.text.length > 2) {
+                //Path to save
+                Directory appDocumentsDirectory =
+                    await getApplicationDocumentsDirectory();
+                String appDocumentsPath = appDocumentsDirectory.path;
+                String savePath =
+                    '$appDocumentsPath/' + _controller.text + ".xlsx";
+                //
+                String filePath = _file.path;
+                var bytes = File(filePath).readAsBytesSync();
+                var excel = Excel.decodeBytes(bytes);
+                //copy file to app
+                excel.encode().then((value) {
+                  File(savePath)
+                    ..createSync(recursive: true)
+                    ..writeAsBytesSync(value);
+                });
+              }
             },
             icon: Icon(Icons.check),
             label: Text('erstellen'),

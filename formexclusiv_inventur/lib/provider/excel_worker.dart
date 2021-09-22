@@ -1,17 +1,16 @@
 import 'dart:io';
 
 import 'package:excel/excel.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:formexclusiv_inventur/models/scanned_item.dart';
 
 class ExcelWorker {
   var excel;
-  PlatformFile file;
-  ExcelWorker(PlatformFile file) {
+  String file;
+  ExcelWorker(String file) {
     this.file = file;
-    var bytes = File(file.path).readAsBytesSync();
+    var bytes = File(file).readAsBytesSync();
     excel = Excel.decodeBytes(bytes);
-    print("Path::: " + file.path);
+    print("Path::: " + file);
   }
 
   void addData(String artNr, String schluessel, int menge) {}
@@ -124,10 +123,10 @@ class ExcelWorker {
 
   void saveExcel() {
     excel.encode().then((onValue) {
-      File(file.path)
+      File(file)
         ..createSync(recursive: false)
         ..writeAsBytesSync(onValue);
     });
-    print(file.path);
+    print(file);
   }
 }

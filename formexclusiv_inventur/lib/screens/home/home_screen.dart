@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:formexclusiv_inventur/screens/home/components/inventur_card.dart';
 import 'package:formexclusiv_inventur/provider/size_config.dart';
 import 'package:formexclusiv_inventur/screens/home/components/create_inventur_dialog.dart';
-import 'package:formexclusiv_inventur/models/profil.dart' as profil;
 import 'package:path_provider/path_provider.dart';
-import 'dart:io' as io;
+import 'dart:io';
+import 'package:path/path.dart' as p;
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
@@ -14,14 +14,21 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  void _listofFiles() async {
+  Future<List<FileSystemEntity>> _listofFiles() async {
     String directory = (await getApplicationDocumentsDirectory()).path;
-    print(io.Directory(directory).listSync());
+    List<FileSystemEntity> files = Directory(directory).listSync();
+    List<FileSystemEntity> result = [];
+    for (var file in files) {
+      if (p.extension(file.path) == ".xlsx") {
+        result.add(file);
+      }
+    }
+    return result;
   }
 
   @override
   Widget build(BuildContext context) {
-    _listofFiles();
+    //Future<List<FileSystemEntity>> files = _listofFiles();
     SizeConfig().init(context);
     return Scaffold(
       body: SafeArea(
@@ -52,11 +59,30 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: EdgeInsets.symmetric(
                     horizontal: SizeConfig.defaultSize * 2),
                 child: Container(
-                  child: ListView.builder(
+                  child: FutureBuilder(
+                    future: _listofFiles(),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: Text("Loading"),
+                        );
+                      } else {
+                        if (snapshot.hasError)
+                          return Center(
+                              child: Text('Error: ${snapshot.error}'));
+                        else
+                          return ListView.builder(
+                              itemCount: snapshot.data.length,
+                              itemBuilder: (context, index) =>
+                                  InventurCard(snapshot.data[index].path));
+                      }
+                    },
+                  ),
+                  /*child: ListView.builder(
                     itemCount: profil.inventur_holder.length,
                     itemBuilder: (context, index) =>
                         InventurCard(profil.inventur_holder[index]),
-                  ),
+                  ),*/
                 ),
               ),
             ),
