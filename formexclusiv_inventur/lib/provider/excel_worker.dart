@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:excel/excel.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/material.dart';
 import 'package:formexclusiv_inventur/models/scanned_item.dart';
 
 class ExcelWorker {
@@ -45,18 +44,26 @@ class ExcelWorker {
 
   void updateItem(ScannedItem s) {
     String id = s.artNr;
-    for (var table in excel.tables.keys) {
-      List<dynamic> rows = excel.tables[table].rows;
-      for (int i = 1; i < rows.length; i++) {
-        dynamic row = rows[i];
-        if (row.elementAt(0) == id) {
-          row[2] = s.kategorie;
-          row[3] = s.preis.toString();
-          row[4] = s.anzahl.toString();
-          row[5] = (s.anzahl * s.preis).toString();
-          print("saved: " + s.bezeichnung);
-          return;
-        }
+    var table = excel.tables.keys.toList()[0];
+    List<dynamic> rows = excel.tables[table].rows;
+    for (int i = 1; i < rows.length; i++) {
+      dynamic row = rows[i];
+      if (row.elementAt(0) == id) {
+        excel.updateCell(
+          table,
+          CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: i),
+          s.kategorie,
+        );
+        excel.updateCell(
+          table,
+          CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: i),
+          s.preis.toString(),
+        );
+        excel.updateCell(
+          table,
+          CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: i),
+          s.anzahl.toString(),
+        );
       }
     }
   }
@@ -83,14 +90,14 @@ class ExcelWorker {
       List<dynamic> rows = excel.tables[table].rows;
       for (int i = 1; i < rows.length; i++) {
         dynamic row = rows[i];
-        if (row[0] == "110015") print("matching row:::::" + row.toString());
         if (_scanForNull(row)) continue;
-        if (row[4] != "0" || row[4] != "null") {
+        print(row[1].toString() + "  " + row[4].toString());
+        if (row[4] != 0 && row[4].toString() != "null") {
           String artNr = row[0];
-          String bezeichnung = row[1];
-          String kategorie = row[2];
-          double preis = double.tryParse(row[3]);
-          int menge = int.tryParse(row[4]);
+          String bezeichnung = row[1] == null ? "leer" : row[1];
+          String kategorie = row[2] == null ? "leer" : row[2];
+          double preis = double.tryParse(row[3].toString());
+          int menge = int.tryParse(row[4].toString());
           scans.add(
             new ScannedItem(artNr, bezeichnung, menge, kategorie, preis),
           );
@@ -101,19 +108,26 @@ class ExcelWorker {
   }
 
   bool _scanForNull(List<dynamic> row) {
-    return (row[0] != null || row[0] != "null") &&
-        (row[1] != null || row[1] != "null") &&
-        (row[2] != null || row[2] != "null") &&
-        (row[3] != null || row[3] != "null") &&
-        (row[4] != null || row[4] != "null") &&
-        (row[5] != null || row[5] != "null");
+    return row[0] == null ||
+        row[0] == "null" ||
+        row[1] == null ||
+        row[1] == "null" ||
+        row[2] == null ||
+        row[2] == "null" ||
+        row[3] == null ||
+        row[3] == "null" ||
+        row[4] == null ||
+        row[4] == "null" ||
+        row[5] == null ||
+        row[5] == "null";
   }
 
   void saveExcel() {
     excel.encode().then((onValue) {
       File(file.path)
-        ..createSync(recursive: true)
+        ..createSync(recursive: false)
         ..writeAsBytesSync(onValue);
     });
+    print(file.path);
   }
 }

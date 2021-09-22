@@ -82,12 +82,7 @@ class _CreateInventurDialogState extends State<CreateInventurDialog> {
                 File(savePath)
                   ..createSync(recursive: true)
                   ..writeAsBytesSync(value);
-              }).whenComplete(
-                () {
-                  bytes = File(savePath).readAsBytesSync();
-                  excel = Excel.decodeBytes(bytes);
-                },
-              );
+              });
             },
             icon: Icon(Icons.check),
             label: Text('erstellen'),

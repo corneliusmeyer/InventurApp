@@ -4,6 +4,8 @@ import 'package:formexclusiv_inventur/models/scanned_item.dart';
 import 'package:formexclusiv_inventur/provider/excel_worker.dart';
 import 'package:formexclusiv_inventur/screens/inventur/components/addItem_view.dart';
 import 'package:formexclusiv_inventur/screens/inventur/components/scanner_view.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io' as io;
 
 class InventurScreen extends StatefulWidget {
   final Inventur inventur;
@@ -16,8 +18,10 @@ class InventurScreen extends StatefulWidget {
 class _InventurScreenState extends State<InventurScreen> {
   ExcelWorker excel;
   List<ScannedItem> scans = [];
+
   @override
   void initState() {
+    super.initState();
     excel = new ExcelWorker(widget.inventur.inventur_file);
     widget.inventur.setup(excel);
     scans = excel.getScannedItems();
@@ -114,10 +118,10 @@ List<DataRow> showAllScans(List<ScannedItem> scans) {
     rows.add(
       DataRow(
         cells: <DataCell>[
-          DataCell(Text(element.artNr)),
-          DataCell(Text(element.bezeichnung)),
+          DataCell(Text(element.artNr.toString())),
+          DataCell(Text(element.bezeichnung.toString())),
           DataCell(Text(element.anzahl.toString())),
-          DataCell(Text(element.kategorie)),
+          DataCell(Text(element.kategorie.toString())),
           DataCell(Text(element.preis.toString())),
         ],
       ),

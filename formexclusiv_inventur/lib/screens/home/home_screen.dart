@@ -3,6 +3,8 @@ import 'package:formexclusiv_inventur/screens/home/components/inventur_card.dart
 import 'package:formexclusiv_inventur/provider/size_config.dart';
 import 'package:formexclusiv_inventur/screens/home/components/create_inventur_dialog.dart';
 import 'package:formexclusiv_inventur/models/profil.dart' as profil;
+import 'package:path_provider/path_provider.dart';
+import 'dart:io' as io;
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
@@ -12,8 +14,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  void _listofFiles() async {
+    String directory = (await getApplicationDocumentsDirectory()).path;
+    print(io.Directory(directory).listSync());
+  }
+
   @override
   Widget build(BuildContext context) {
+    _listofFiles();
     SizeConfig().init(context);
     return Scaffold(
       body: SafeArea(
